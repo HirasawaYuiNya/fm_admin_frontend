@@ -11,14 +11,29 @@
         />
       </div>
     </div>
+    <TablePart :headers="headers" />
+    <div class="pageController">
+      <LeftOutlined class="page-icon" />
+      <span class="page-text">{{ pageNo }}/{{ pageSize }}</span>
+      <RightOutlined class="page-icon" />
+    </div>
   </div>
 </template>
 <script setup>
-import { SearchOutlined } from "@ant-design/icons-vue";
-
+import {
+  LeftOutlined,
+  RightOutlined,
+  SearchOutlined,
+} from "@ant-design/icons-vue";
+import TablePart from "./tablePart.vue";
+import { defineProps } from "vue";
 const props = defineProps({
   listName: String,
+  headers: Array,
+  pageNo: Number,
+  pageSize: Number,
 });
+const { listName, headers, pageNo, pageSize } = props;
 </script>
 <style scoped>
 .listPart {
@@ -26,9 +41,10 @@ const props = defineProps({
   height: 760px;
   background-color: #f0f0f0;
   display: flex;
+  flex-direction: column;
 }
 .topbar {
-  width: 1420px;
+  width: 1340px;
   background-color: #cccccc;
   height: 70px;
   display: flex;
@@ -60,5 +76,22 @@ const props = defineProps({
   border: none;
   outline: none;
   background-color: #f0f0f0;
+}
+.pageController {
+  width: 1420px;
+  height: 70px;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.page-icon {
+  font-size: 28px;
+  color: #4e5969;
+}
+.page-text {
+  font-size: 22px;
+  color: #000000;
 }
 </style>
