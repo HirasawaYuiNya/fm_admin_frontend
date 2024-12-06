@@ -11,10 +11,10 @@
         />
       </div>
     </div>
-    <TablePart :headers="headers" />
+    <TablePart v-bind="tableData" />
     <div class="pageController">
       <LeftOutlined class="page-icon" />
-      <span class="page-text">{{ pageNo }}/{{ pageSize }}</span>
+      <span class="page-text">{{ data.pages }}/{{ data.total }}</span>
       <RightOutlined class="page-icon" />
     </div>
   </div>
@@ -26,14 +26,25 @@ import {
   SearchOutlined,
 } from "@ant-design/icons-vue";
 import TablePart from "./tablePart.vue";
-import { defineProps } from "vue";
+import { ref, watch, computed } from "vue";
 const props = defineProps({
   listName: String,
   headers: Array,
-  pageNo: Number,
-  pageSize: Number,
+  includedFields: Array,
+  data: Object,
 });
-const { listName, headers, pageNo, pageSize } = props;
+const { listName, headers, data, includedFields } = props;
+const tableData = ref({
+  headers: headers,
+  includedFields: includedFields,
+  data: data.list,
+});
+watch(
+  () => props.data,
+  (newVal) => {
+    tableData.value.data = newVal.list;
+  }
+);
 </script>
 <style scoped>
 .listPart {
@@ -89,6 +100,7 @@ const { listName, headers, pageNo, pageSize } = props;
 .page-icon {
   font-size: 28px;
   color: #4e5969;
+  cursor: pointer;
 }
 .page-text {
   font-size: 22px;

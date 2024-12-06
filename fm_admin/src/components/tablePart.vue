@@ -8,28 +8,47 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="n in 10" :key="n" class="row">
-          <th v-for="(header, index) in data" :key="index">{{ header }}</th>
-          <th class="extra" @click="showCard">查看</th>
+        <tr
+          v-if="dataReceived"
+          v-for="(item, index) in receivedData"
+          :key="index"
+          class="row"
+        >
+          <td class="dataText" v-for="key in includedFields" :key="key">
+            {{ item[key] }}
+          </td>
+          <th class="extra pointer" @click="showCard">查看</th>
+        </tr>
+        <tr v-else>
+          Loding...
         </tr>
       </tbody>
     </table>
   </div>
-  <InfoCard v-if="show_card" />
+  <InfoCard v-if="show_card" @close="show_card = false" />
 </template>
 <script setup>
-import { ref } from "vue";
-import { defineProps } from "vue";
+import { ref, watch } from "vue";
 import InfoCard from "./infoCard.vue";
+const dataReceived = ref(false);
+const receivedData = ref([]);
 const show_card = ref(false);
-const data = ref(["data1", "data2", "data3", "data4"]);
 const props = defineProps({
   headers: Array,
+  includedFields: Array,
+  data: Array,
 });
-const { headers } = props;
+const { headers, includedFields } = props;
 const showCard = () => {
   show_card.value = true;
 };
+watch(
+  () => props.data,
+  (newVal) => {
+    receivedData.value = newVal;
+    dataReceived.value = true;
+  }
+);
 </script>
 <style scoped>
 .table-container {
@@ -55,5 +74,11 @@ tr {
 }
 .extra {
   width: 120px;
+}
+.pointer {
+  cursor: pointer;
+}
+.dataText {
+  text-align: center;
 }
 </style>

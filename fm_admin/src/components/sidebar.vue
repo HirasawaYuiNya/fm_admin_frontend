@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    <div class="sidebar-item">
+    <div class="sidebar-item" @click="goUserPage">
       <UserOutlined
         :class="{ 'selecte-color': page === 'user' }"
         class="sidebar-item-icon"
@@ -11,31 +11,40 @@
         >用户管理</span
       >
     </div>
-    <div class="sidebar-item" @click="showSub">
+    <div class="sidebar-item" @click="showSub1">
       <ContainerOutlined
-        :class="{ 'selecte-color': page === 'post' }"
+        :class="{
+          'selecte-color': page === 'rewardPost' || page === 'tradePost',
+        }"
         class="sidebar-item-icon"
       />
       <span
-        :class="{ 'selecte-color': page === 'post' }"
+        :class="{
+          'selecte-color': page === 'rewardPost' || page === 'tradePost',
+        }"
         class="sidebar-item-text"
         >帖子管理</span
       >
       <RightOutlined
-        :class="{ 'selecte-color': page === 'post', 'rotate-icon': sub_1 }"
+        :class="{
+          'selecte-color': page === 'rewardPost' || page === 'tradePost',
+          'rotate-icon': sub_1,
+        }"
         class="sidebar-item-icon small"
       />
     </div>
-    <div class="sidebar-item sub" v-if="sub_1">
+    <div class="sidebar-item sub" v-if="sub_1" @click="goRewardPostPage">
       <span
-        :class="{ 'selecte-color': page === 'post' }"
+        :class="{
+          'selecte-color': page === 'rewardPost',
+        }"
         class="sidebar-item-text sub-text"
         >悬赏帖子</span
       >
     </div>
     <div class="sidebar-item sub" v-if="sub_1">
       <span
-        :class="{ 'selecte-color': page === 'post' }"
+        :class="{ 'selecte-color': page === 'tradePost' }"
         class="sidebar-item-text sub-text"
         >交易帖子</span
       >
@@ -51,6 +60,71 @@
         >消息管理</span
       >
     </div>
+    <div class="sidebar-item" @click="showSub2">
+      <ExclamationCircleOutlined
+        :class="{ 'selecte-color': page === 'report' }"
+        class="sidebar-item-icon"
+      />
+      <span
+        :class="{ 'selecte-color': page === 'report' }"
+        class="sidebar-item-text"
+        >举报管理</span
+      >
+      <RightOutlined
+        :class="{ 'selecte-color': page === 'report', 'rotate-icon': sub_2 }"
+        class="sidebar-item-icon small"
+      />
+    </div>
+    <div class="sidebar-item sub" v-if="sub_2">
+      <span
+        :class="{ 'selecte-color': page === 'report' }"
+        class="sidebar-item-text sub-text"
+        >用户举报</span
+      >
+    </div>
+    <div class="sidebar-item sub" v-if="sub_2">
+      <span
+        :class="{ 'selecte-color': page === 'report' }"
+        class="sidebar-item-text sub-text"
+        >帖子举报</span
+      >
+    </div>
+    <div class="sidebar-item sub" v-if="sub_2">
+      <span
+        :class="{ 'selecte-color': page === 'report' }"
+        class="sidebar-item-text sub-text"
+        >评论举报</span
+      >
+    </div>
+    <div class="sidebar-item" @click="showSub3">
+      <QuestionCircleOutlined
+        :class="{ 'selecte-color': page === 'appeal' }"
+        class="sidebar-item-icon"
+      />
+      <span
+        :class="{ 'selecte-color': page === 'appeal' }"
+        class="sidebar-item-text"
+        >申诉管理</span
+      >
+      <RightOutlined
+        :class="{ 'selecte-color': page === 'appeal', 'rotate-icon': sub_3 }"
+        class="sidebar-item-icon small"
+      />
+    </div>
+    <div class="sidebar-item sub" v-if="sub_3">
+      <span
+        :class="{ 'selecte-color': page === 'appeal' }"
+        class="sidebar-item-text sub-text"
+        >悬赏申诉</span
+      >
+    </div>
+    <div class="sidebar-item sub" v-if="sub_3">
+      <span
+        :class="{ 'selecte-color': page === 'appeal' }"
+        class="sidebar-item-text sub-text"
+        >交易申诉</span
+      >
+    </div>
   </div>
 </template>
 <script setup>
@@ -59,15 +133,47 @@ import {
   RightOutlined,
   UserOutlined,
   CommentOutlined,
+  ExclamationCircleOutlined,
+  QuestionCircleOutlined,
 } from "@ant-design/icons-vue";
-import { defineProps } from "vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+const route = useRoute();
+const router = useRouter();
 const props = defineProps({
   page: String,
 });
 const sub_1 = ref(false);
-const showSub = () => {
+const sub_2 = ref(false);
+const sub_3 = ref(false);
+const initializeState = () => {
+  sub_1.value = route.query.sub_1 === "true";
+  sub_2.value = route.query.sub_2 === "true";
+  sub_3.value = route.query.sub_3 === "true";
+};
+const showSub1 = () => {
   sub_1.value = !sub_1.value;
+};
+const showSub2 = () => {
+  sub_2.value = !sub_2.value;
+};
+const showSub3 = () => {
+  sub_3.value = !sub_3.value;
+};
+onMounted(() => {
+  initializeState();
+});
+const goUserPage = () => {
+  router.push({
+    name: "user",
+    query: { sub_1: sub_1.value, sub_2: sub_2.value, sub_3: sub_3.value },
+  });
+};
+const goRewardPostPage = () => {
+  router.push({
+    name: "rewardPost",
+    query: { sub_1: sub_1.value, sub_2: sub_2.value, sub_3: sub_3.value },
+  });
 };
 </script>
 <style scoped>
@@ -83,6 +189,7 @@ const showSub = () => {
   padding-left: 20px;
   height: 80px;
   background-color: #2f436e;
+  cursor: pointer;
 }
 .sub {
   height: 60px;

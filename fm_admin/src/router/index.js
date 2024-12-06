@@ -1,17 +1,19 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import user from "../views/user.vue";
 
-// 路由规则
 const routes = [
   {
     path: "/",
-    component: user,
     children: [
-      { path: "", redirect: "/User" },
+      { path: "", redirect: "user" },
       {
-        path: "/user",
+        path: "user",
         name: "user",
         component: () => import("../views/user.vue"),
+      },
+      {
+        path: "rewardPost",
+        name: "rewardPost",
+        component: () => import("../views/rewardPost.vue"),
       },
     ],
   },

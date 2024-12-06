@@ -1,10 +1,18 @@
 <template>
   <div class="overlay">
-    <div class="card"></div>
+    <div class="card">
+      <CloseOutlined class="close-icon" @click="closeCard" />
+    </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { CloseOutlined } from "@ant-design/icons-vue";
+const emit = defineEmits(["close"]);
+const closeCard = () => {
+  emit("close"); // 触发父组件的 close 事件
+};
+</script>
 
 <style scoped>
 .overlay {
@@ -13,8 +21,8 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5); /* 背景色为半透明黑 */
-  backdrop-filter: brightness(70%); /* 使用 backdrop-filter 调低背景亮度 */
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: brightness(70%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -26,7 +34,20 @@
   width: 800px;
   height: 600px;
   background-color: #ffffff;
-  transition: filter 0.3s ease;
   z-index: 10;
+  border-radius: 8px;
+}
+
+.close-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 30px;
+  cursor: pointer;
+  color: #000000;
+  transition: color 0.3s ease;
+}
+.close-icon:hover {
+  color: #2f436e;
 }
 </style>
