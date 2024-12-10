@@ -2,17 +2,17 @@
   <div class="background">
     <Sidebar :page="'tradePost'" />
     <div class="main">
-      <Topbar :text="'帖子管理'" />
+      <Topbar :text="'交易帖子'" />
       <ListPart v-bind="listPartData" />
     </div>
   </div>
 </template>
 <script setup>
-import ListPart from "../components/listPart.vue";
-import Sidebar from "../components/sidebar.vue";
-import Topbar from "../components/topbar.vue";
+import ListPart from "../../components/listPart.vue";
+import Topbar from "../../components/topbar.vue";
+import Sidebar from "../../components/sidebar.vue";
 import { ref, onMounted } from "vue";
-import { getPostList } from "../api/api.js";
+import { getPostList } from "../../api/api.js";
 const listPartData = ref({
   listName: "帖子列表",
   headers: ["帖子ID", "用户ID", "标题", "类型"],

@@ -3,11 +3,15 @@
     <div class="topbar">
       <span class="topbar-text">{{ listName }}</span>
       <div class="topbar-search">
-        <SearchOutlined class="topbar-search-icon" />
+        <SearchOutlined
+          class="topbar-search-icon"
+          @click="searchById(searchId)"
+        />
         <input
           type="text"
           class="topbar-search-input"
           placeholder="输入ID查询"
+          v-model="searchId"
         />
       </div>
     </div>
@@ -22,11 +26,16 @@
           </tr>
         </thead>
         <tbody v-if="dataReceived">
-          <tr v-for="(item, index) in receivedData" :key="index" class="row">
+          <tr v-for="(item, index) in listData.list" :key="index" class="row">
             <td class="dataText" v-for="key in includedFields" :key="key">
               {{ item[key] }}
             </td>
-            <th class="extra pointer" @click="showCard">查看</th>
+            <th
+              class="extra pointer"
+              @click="showCard(item[includedFields[0]])"
+            >
+              查看
+            </th>
           </tr>
         </tbody>
         <tbody v-else>
@@ -38,13 +47,13 @@
       <div v-for="(header, idx) in cardHeaders" :key="idx" class="card-item">
         <div class="card-item-content">
           <strong>{{ header }}:</strong>
-          <span>{{ receivedUserData[cardKeys[idx]] }}</span>
+          <span>{{ infoData[cardKeys[idx]] }}</span>
         </div>
       </div>
     </InfoCard>
     <div class="pageController">
       <LeftOutlined class="page-icon" />
-      <span class="page-text">{{ data.pages }}/{{ data.total }}</span>
+      <span class="page-text">{{ listData.pages }}/{{ listData.total }}</span>
       <RightOutlined class="page-icon" />
     </div>
   </div>
@@ -55,41 +64,42 @@ import {
   RightOutlined,
   SearchOutlined,
 } from "@ant-design/icons-vue";
-import { ref, watch } from "vue";
+import { ref, onMounted } from "vue";
 import { LoadingOutlined } from "@ant-design/icons-vue";
 import InfoCard from "./infoCard.vue";
 const dataReceived = ref(false);
-const receivedData = ref([]);
-const receivedUserData = ref({});
 const show_card = ref(false);
+const listData = ref({});
+const infoData = ref({});
+const searchId = ref("");
 const props = defineProps({
   listName: String,
   headers: Array,
   cardHeaders: Array,
   cardKeys: Array,
   includedFields: Array,
-  data: Object,
-  userData: Object,
+  getList: Function,
+  getInfo: Function,
 });
-const { listName, headers, data, includedFields, cardHeaders, cardKeys } =
-  props;
-watch(
-  [() => props.data, () => props.userData],
-  ([newData, newUserData]) => {
-    if (newData) {
-      receivedData.value = newData.list;
-      dataReceived.value = true;
-      console.log(receivedData.value);
-    }
-    if (newUserData) {
-      receivedUserData.value = newUserData;
-    }
-  },
-  { deep: true }
-);
-const showCard = () => {
+const { listName, headers, includedFields, cardHeaders, cardKeys } = props;
+const showCard = (id) => {
+  getInfoData(id);
   show_card.value = true;
 };
+const getListData = async () => {
+  listData.value = await props.getList();
+  dataReceived.value = true;
+};
+const getInfoData = async (id) => {
+  infoData.value = await props.getInfo(id);
+};
+const searchById = (id) => {
+  getInfoData(id);
+  show_card.value = true;
+};
+onMounted(() => {
+  getListData();
+});
 </script>
 <style scoped>
 .listPart {

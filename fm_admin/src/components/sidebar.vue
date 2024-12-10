@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    <div class="sidebar-item" @click="goUserPage">
+    <div class="sidebar-item" @click="goPage('user')">
       <UserOutlined
         :class="{ 'selecte-color': page === 'user' }"
         class="sidebar-item-icon"
@@ -11,7 +11,7 @@
         >用户管理</span
       >
     </div>
-    <div class="sidebar-item" @click="showSub1">
+    <div class="sidebar-item" @click="showSub('1')">
       <ContainerOutlined
         :class="{
           'selecte-color': page === 'rewardPost' || page === 'tradePost',
@@ -33,7 +33,7 @@
         class="sidebar-item-icon small"
       />
     </div>
-    <div class="sidebar-item sub" v-if="sub_1" @click="goRewardPostPage">
+    <div class="sidebar-item sub" v-if="sub_1" @click="goPage('rewardPost')">
       <span
         :class="{
           'selecte-color': page === 'rewardPost',
@@ -42,7 +42,7 @@
         >悬赏帖子</span
       >
     </div>
-    <div class="sidebar-item sub" v-if="sub_1" @click="goTradePostPage">
+    <div class="sidebar-item sub" v-if="sub_1" @click="goPage('tradePost')">
       <span
         :class="{ 'selecte-color': page === 'tradePost' }"
         class="sidebar-item-text sub-text"
@@ -60,7 +60,7 @@
         >消息管理</span
       >
     </div>
-    <div class="sidebar-item" @click="showSub2">
+    <div class="sidebar-item" @click="showSub('2')">
       <ExclamationCircleOutlined
         :class="{ 'selecte-color': page === 'report' }"
         class="sidebar-item-icon"
@@ -96,7 +96,7 @@
         >评论举报</span
       >
     </div>
-    <div class="sidebar-item" @click="showSub3">
+    <div class="sidebar-item" @click="showSub('3')">
       <QuestionCircleOutlined
         :class="{ 'selecte-color': page === 'appeal' }"
         class="sidebar-item-icon"
@@ -151,33 +151,25 @@ const initializeState = () => {
   sub_2.value = route.query.sub_2 === "true";
   sub_3.value = route.query.sub_3 === "true";
 };
-const showSub1 = () => {
-  sub_1.value = !sub_1.value;
-};
-const showSub2 = () => {
-  sub_2.value = !sub_2.value;
-};
-const showSub3 = () => {
-  sub_3.value = !sub_3.value;
+const showSub = (subNo) => {
+  switch (subNo) {
+    case "1":
+      sub_1.value = !sub_1.value;
+      break;
+    case "2":
+      sub_2.value = !sub_2.value;
+      break;
+    case "3":
+      sub_3.value = !sub_3.value;
+      break;
+  }
 };
 onMounted(() => {
   initializeState();
 });
-const goUserPage = () => {
+const goPage = (pagename) => {
   router.push({
-    name: "user",
-    query: { sub_1: sub_1.value, sub_2: sub_2.value, sub_3: sub_3.value },
-  });
-};
-const goRewardPostPage = () => {
-  router.push({
-    name: "rewardPost",
-    query: { sub_1: sub_1.value, sub_2: sub_2.value, sub_3: sub_3.value },
-  });
-};
-const goTradePostPage = () => {
-  router.push({
-    name: "tradePost",
+    name: pagename,
     query: { sub_1: sub_1.value, sub_2: sub_2.value, sub_3: sub_3.value },
   });
 };
