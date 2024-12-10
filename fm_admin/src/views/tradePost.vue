@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <Sidebar :page="'rewardPost'" />
+    <Sidebar :page="'tradePost'" />
     <div class="main">
       <Topbar :text="'帖子管理'" />
       <ListPart v-bind="listPartData" />
@@ -24,7 +24,7 @@ const listPartData = ref({
   },
 });
 const requestData = ref({
-  type: 0,
+  type: 1,
   typeId: null,
   tagId: null,
   pageNo: 1,

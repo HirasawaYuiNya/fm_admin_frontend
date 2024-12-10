@@ -12,16 +12,26 @@ import ListPart from "../components/listPart.vue";
 import Sidebar from "../components/sidebar.vue";
 import Topbar from "../components/topbar.vue";
 import { ref, onMounted } from "vue";
-import { getUserList } from "../api/api.js";
+import { getUserList, getUser } from "../api/api.js";
 const listPartData = ref({
   listName: "用户列表",
   headers: ["用户ID", "手机号", "用户名", "用户身份"],
   includedFields: ["id", "phone", "username", "identity"],
+  cardHeaders: ["用户名", "手机号", "性别", "用户身份", "头像位置", "密码"],
+  cardKeys: [
+    "username",
+    "phone",
+    "gender",
+    "identity",
+    "avatarUrl",
+    "password",
+  ],
   data: {
     list: [],
     total: 0,
     pages: 0,
   },
+  userData: {},
 });
 const requestData = ref({
   pageNo: 1,
@@ -35,8 +45,17 @@ const getUserInfoList = async () => {
     console.log(err);
   }
 };
+const getUserInfo = async () => {
+  try {
+    const response = await getUser("1");
+    listPartData.value.userData = response.data.data;
+  } catch (err) {
+    console.log(err);
+  }
+};
 onMounted(() => {
   getUserInfoList();
+  getUserInfo();
 });
 </script>
 <style scoped>

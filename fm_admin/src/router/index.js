@@ -15,6 +15,11 @@ const routes = [
         name: "rewardPost",
         component: () => import("../views/rewardPost.vue"),
       },
+      {
+        path: "tradePost",
+        name: "tradePost",
+        component: () => import("../views/tradePost.vue"),
+      },
     ],
   },
 ];

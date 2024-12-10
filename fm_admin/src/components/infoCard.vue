@@ -2,6 +2,11 @@
   <div class="overlay">
     <div class="card">
       <CloseOutlined class="close-icon" @click="closeCard" />
+      <div class="card-content">
+        <slot>
+          <p>No content provided.</p>
+        </slot>
+      </div>
     </div>
   </div>
 </template>
@@ -10,7 +15,7 @@
 import { CloseOutlined } from "@ant-design/icons-vue";
 const emit = defineEmits(["close"]);
 const closeCard = () => {
-  emit("close"); // 触发父组件的 close 事件
+  emit("close");
 };
 </script>
 
@@ -49,5 +54,11 @@ const closeCard = () => {
 }
 .close-icon:hover {
   color: #2f436e;
+}
+.card-content {
+  margin-top: 30px;
+  margin-left: 30px;
+  width: 600px;
+  height: 520px;
 }
 </style>

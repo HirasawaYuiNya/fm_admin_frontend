@@ -42,7 +42,7 @@
         >悬赏帖子</span
       >
     </div>
-    <div class="sidebar-item sub" v-if="sub_1">
+    <div class="sidebar-item sub" v-if="sub_1" @click="goTradePostPage">
       <span
         :class="{ 'selecte-color': page === 'tradePost' }"
         class="sidebar-item-text sub-text"
@@ -172,6 +172,12 @@ const goUserPage = () => {
 const goRewardPostPage = () => {
   router.push({
     name: "rewardPost",
+    query: { sub_1: sub_1.value, sub_2: sub_2.value, sub_3: sub_3.value },
+  });
+};
+const goTradePostPage = () => {
+  router.push({
+    name: "tradePost",
     query: { sub_1: sub_1.value, sub_2: sub_2.value, sub_3: sub_3.value },
   });
 };

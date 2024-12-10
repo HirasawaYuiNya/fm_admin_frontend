@@ -14,6 +14,15 @@ export const getUserList = (data) => {
     data,
   });
 };
+export const getUser = (id) => {
+  return monkTest({
+    Headers: {
+      "Content-Type": "application/json",
+    },
+    url: "/user/admin/user/${id}",
+    method: "get",
+  });
+};
 export const getPostList = (data) => {
   return monkTest({
     Headers: {
