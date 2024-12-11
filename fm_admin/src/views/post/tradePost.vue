@@ -13,16 +13,7 @@ import Topbar from "../../components/topbar.vue";
 import Sidebar from "../../components/sidebar.vue";
 import { ref, onMounted } from "vue";
 import { getPostList } from "../../api/api.js";
-const listPartData = ref({
-  listName: "帖子列表",
-  headers: ["帖子ID", "用户ID", "标题", "类型"],
-  includedFields: ["id", "userId", "title", "tagType"],
-  data: {
-    list: [],
-    total: 0,
-    pages: 0,
-  },
-});
+
 const requestData = ref({
   type: 1,
   typeId: null,
@@ -38,6 +29,12 @@ const getPostInfoList = async () => {
     console.log(err);
   }
 };
+const listPartData = ref({
+  listName: "帖子列表",
+  headers: ["帖子ID", "用户ID", "标题", "类型"],
+  includedFields: ["id", "userId", "title", "tagType"],
+  getList: getPostInfoList,
+});
 onMounted(() => {
   getPostInfoList();
 });

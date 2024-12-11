@@ -1,6 +1,6 @@
 <template>
   <div class="background">
-    <Sidebar :page="'tradePost'" />
+    <Sidebar :page="'message'" />
     <div class="main">
       <Topbar :text="'消息管理'" />
       <ListPart v-bind="listPartData" />
@@ -14,13 +14,8 @@ import Topbar from "../../components/topbar.vue";
 import { ref, onMounted } from "vue";
 const listPartData = ref({
   listName: "消息列表",
-  headers: ["帖子ID", "用户ID", "标题", "类型"],
+  headers: ["消息ID", "用户ID", "标题", "类型"],
   includedFields: ["id", "userId", "title", "tagType"],
-  data: {
-    list: [],
-    total: 0,
-    pages: 0,
-  },
 });
 onMounted(() => {});
 </script>
