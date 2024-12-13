@@ -12,7 +12,7 @@ import ListPart from "../../components/listPart.vue";
 import Topbar from "../../components/topbar.vue";
 import Sidebar from "../../components/sidebar.vue";
 import { ref, onMounted } from "vue";
-import { getUserList, getUser } from "../../api/api.js";
+import { getUserList, getUser, updateUser } from "../../api/api.js";
 const requestData = ref({
   pageNo: 1,
   pageSize: 10,
@@ -20,21 +20,30 @@ const requestData = ref({
 
 const getUserInfoList = async (request = requestData) => {
   try {
-    const response = await getUserList(request);
+    const response = await getUserList(request.value);
     listPartData.value.data = response.data.data;
     return response.data.data;
   } catch (err) {
     console.log(err);
-    throw err;
+    return null;
   }
 };
-const getUserInfo = async (request = "1") => {
+const getUserInfo = async (request) => {
   try {
     const response = await getUser(request);
     return response.data.data;
   } catch (err) {
     console.log(err);
-    throw err;
+    return null;
+  }
+};
+const updateUserInfo = async (request) => {
+  try {
+    const response = await updateUser(request);
+    return response.data.data;
+  } catch (err) {
+    console.log(err);
+    return null;
   }
 };
 
@@ -53,11 +62,11 @@ const listPartData = ref({
   ],
   getList: getUserInfoList,
   getInfo: getUserInfo,
+  updateInfo: updateUserInfo,
 });
 
 onMounted(() => {
   getUserInfoList();
-  getUserInfo();
 });
 </script>
 <style scoped>

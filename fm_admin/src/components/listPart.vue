@@ -5,7 +5,7 @@
       <div class="topbar-search">
         <SearchOutlined
           class="topbar-search-icon"
-          @click="searchById(searchId)"
+          @click="getInfoData(searchId)"
         />
         <input
           type="text"
@@ -32,7 +32,7 @@
             </td>
             <th
               class="extra pointer"
-              @click="showCard(item[includedFields[0]])"
+              @click="getInfoData(item[includedFields[0]])"
             >
               查看
             </th>
@@ -53,7 +53,9 @@
     </InfoCard>
     <div class="pageController">
       <LeftOutlined class="page-icon" />
-      <span class="page-text">{{ listData.pages }}/{{ listData.total }}</span>
+      <span class="page-text"
+        >{{ listData.pages }}/{{ Math.floor(listData.total / 10) + 1 }}</span
+      >
       <RightOutlined class="page-icon" />
     </div>
   </div>
@@ -67,6 +69,7 @@ import {
 import { ref, onMounted } from "vue";
 import { LoadingOutlined } from "@ant-design/icons-vue";
 import InfoCard from "./infoCard.vue";
+import { showAlert } from "../utils/alertService";
 const dataReceived = ref(false);
 const show_card = ref(false);
 const listData = ref({});
@@ -80,21 +83,25 @@ const props = defineProps({
   includedFields: Array,
   getList: Function,
   getInfo: Function,
+  updateInfo: Function,
 });
 const { listName, headers, includedFields, cardHeaders, cardKeys } = props;
-const showCard = (id) => {
-  getInfoData(id);
-  show_card.value = true;
-};
 const getListData = async () => {
   listData.value = await props.getList();
   dataReceived.value = true;
 };
 const getInfoData = async (id) => {
   infoData.value = await props.getInfo(id);
+  console.log(infoData.value);
+  if (infoData.value == null) {
+    showAlert("搜索内容不存在", "error");
+    return;
+  }
+  show_card.value = true;
 };
-const searchById = (id) => {
-  getInfoData(id);
+const updateInfoData = async (data) => {
+  infoData.value = await props.updateInfo(data);
+  console.log(infoData.value);
   show_card.value = true;
 };
 onMounted(() => {
