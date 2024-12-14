@@ -37,10 +37,10 @@ const getUserInfo = async (request) => {
     return null;
   }
 };
-const updateUserInfo = async (request) => {
+const updateUserInfo = async (id, data) => {
   try {
-    const response = await updateUser(request);
-    return response.data.data;
+    const response = await updateUser(id, data);
+    return response.data.status;
   } catch (err) {
     console.log(err);
     return null;
@@ -60,6 +60,8 @@ const listPartData = ref({
     "avatarUrl",
     "password",
   ],
+  updateHeaders: ["用户名", "性别", "用户身份"],
+  updateKeys: ["username", "gender", "identity"],
   getList: getUserInfoList,
   getInfo: getUserInfo,
   updateInfo: updateUserInfo,

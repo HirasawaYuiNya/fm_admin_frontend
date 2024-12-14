@@ -7,6 +7,9 @@
           <p>No content provided.</p>
         </slot>
       </div>
+      <div class="updatePart">
+        <slot name="update"></slot>
+      </div>
     </div>
   </div>
 </template>
@@ -59,6 +62,13 @@ const closeCard = () => {
   margin-top: 30px;
   margin-left: 30px;
   width: 600px;
-  height: 520px;
+  height: 480px;
+}
+.updatePart {
+  width: 800px;
+  height: 70px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }
 </style>

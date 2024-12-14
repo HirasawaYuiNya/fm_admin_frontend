@@ -12,7 +12,7 @@ import ListPart from "../../components/listPart.vue";
 import Topbar from "../../components/topbar.vue";
 import Sidebar from "../../components/sidebar.vue";
 import { ref, onMounted } from "vue";
-import { getPost, getPostList } from "../../api/api.js";
+import { getPost, getPostList, updatePost } from "../../api/api.js";
 const requestData = {
   type: null,
   typeId: null,
@@ -23,7 +23,6 @@ const requestData = {
 const getPostInfoList = async () => {
   try {
     const response = await getPostList(requestData);
-    console.log(response.data.data);
     return response.data.data;
   } catch (err) {
     console.log(err);
@@ -34,6 +33,16 @@ const getPostInfo = async (request) => {
   try {
     const response = await getPost(request);
     return response.data.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+const updatePostInfo = async (id, data) => {
+  try {
+    const response = await updatePost(id, data);
+    console.log(response.data);
+    return response.data.status;
   } catch (err) {
     console.log(err);
     return null;
@@ -52,6 +61,7 @@ const listPartData = ref({
     "评论数",
     "更新时间",
     "帖子类型",
+    "状态",
   ],
   cardKeys: [
     "userId",
@@ -62,9 +72,13 @@ const listPartData = ref({
     "favoriteCount",
     "updateTime",
     "type",
+    "status",
   ],
+  updateHeaders: ["标题", "内容", "状态"],
+  updateKeys: ["title", "content", "status"],
   getList: getPostInfoList,
   getInfo: getPostInfo,
+  updateInfo: updatePostInfo,
 });
 
 onMounted(() => {

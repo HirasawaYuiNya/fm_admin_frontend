@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const monkTest = axios.create({
-  baseURL: "http://127.0.0.1:4523/m1/5505077-5181244-default/api",
+  baseURL: "http://127.0.0.1:4523/m1/5505077-5181244-default",
   timeout: 10000,
 });
 const env = axios.create({
@@ -56,12 +56,12 @@ export const getUser = (id) => {
   });
 };
 //修改用户信息
-export const updateUser = (data) => {
+export const updateUser = (id, data) => {
   return env({
     headers: {
       "Content-Type": "application/json",
     },
-    url: `/api/user/admin/user`,
+    url: `/api/user/admin/user/${id}`,
     method: "put",
     data,
   });
@@ -85,5 +85,16 @@ export const getPost = (id) => {
     },
     url: `/api/post/post/${id}`,
     method: "get",
+  });
+};
+//修改帖子内容
+export const updatePost = (id, data) => {
+  return env({
+    headers: {
+      "Content-Type": "application/json",
+    },
+    url: `/api/post/post/${id}`,
+    method: "put",
+    data,
   });
 };

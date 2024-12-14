@@ -44,12 +44,49 @@
       </table>
     </div>
     <InfoCard v-if="show_card" @close="show_card = false">
-      <div v-for="(header, idx) in cardHeaders" :key="idx" class="card-item">
+      <div
+        v-if="!updateStatus"
+        v-for="(header, idx) in cardHeaders"
+        :key="idx"
+        class="card-item"
+      >
         <div class="card-item-content">
           <strong>{{ header }}:</strong>
           <span>{{ infoData[cardKeys[idx]] }}</span>
         </div>
       </div>
+      <div
+        v-if="updateStatus"
+        v-for="(header, idx) in updateHeaders"
+        :key="idx"
+        class="card-item"
+      >
+        <div class="card-item-content">
+          <strong>{{ header }}:</strong>
+          <input
+            :value="updateData[updateKeys[idx]]"
+            @input="handleInput($event, idx)"
+            class="update-input"
+          />
+        </div>
+      </div>
+      <template #update>
+        <EditOutlined
+          class="update-icon"
+          v-if="!updateStatus"
+          @click="changeUpdateStatus"
+        />
+        <CheckOutlined
+          class="update-icon"
+          v-if="updateStatus"
+          @click="update"
+        />
+        <CloseOutlined
+          class="update-icon"
+          v-if="updateStatus"
+          @click="changeUpdateStatus"
+        />
+      </template>
     </InfoCard>
     <div class="pageController">
       <LeftOutlined class="page-icon" />
@@ -62,6 +99,9 @@
 </template>
 <script setup>
 import {
+  CheckOutlined,
+  CloseOutlined,
+  EditOutlined,
   LeftOutlined,
   RightOutlined,
   SearchOutlined,
@@ -75,34 +115,73 @@ const show_card = ref(false);
 const listData = ref({});
 const infoData = ref({});
 const searchId = ref("");
+const updateStatus = ref(false);
+const updateData = ref({});
+const cardID = ref("");
 const props = defineProps({
   listName: String,
   headers: Array,
   cardHeaders: Array,
   cardKeys: Array,
+  updateHeaders: Array,
+  updateKeys: Array,
   includedFields: Array,
   getList: Function,
   getInfo: Function,
   updateInfo: Function,
 });
-const { listName, headers, includedFields, cardHeaders, cardKeys } = props;
+const {
+  listName,
+  headers,
+  includedFields,
+  cardHeaders,
+  cardKeys,
+  updateHeaders,
+  updateKeys,
+} = props;
+const changeUpdateStatus = () => {
+  updateStatus.value = !updateStatus.value;
+  updateData.value = { ...infoData.value };
+};
+const update = async () => {
+  await updateInfoData(cardID.value, updateData.value);
+  show_card.value = false;
+};
 const getListData = async () => {
   listData.value = await props.getList();
   dataReceived.value = true;
 };
 const getInfoData = async (id) => {
   infoData.value = await props.getInfo(id);
-  console.log(infoData.value);
   if (infoData.value == null) {
     showAlert("搜索内容不存在", "error");
     return;
   }
+  cardID.value = id;
   show_card.value = true;
 };
-const updateInfoData = async (data) => {
-  infoData.value = await props.updateInfo(data);
-  console.log(infoData.value);
-  show_card.value = true;
+const updateInfoData = async (id, data) => {
+  const _data = Object.assign({}, data);
+  console.log(_data);
+  updateStatus.value = await props.updateInfo(id, _data);
+  if (updateStatus.value) {
+    showAlert("更新失败", "error");
+    return;
+  }
+  showAlert("更新成功", "success");
+};
+const handleInput = (event, idx) => {
+  const value = event.target.value;
+  const key = updateKeys[idx];
+
+  // 根据原始类型进行转换
+  if (typeof updateData.value[key] === "number") {
+    updateData.value[key] = Number(value); // 转换为数字
+  } else if (typeof updateData.value[key] === "boolean") {
+    updateData.value[key] = value === "true"; // 转换为布尔值
+  } else {
+    updateData.value[key] = value; // 保持为字符串
+  }
 };
 onMounted(() => {
   getListData();
@@ -215,5 +294,14 @@ tr {
 }
 .card-item-content strong {
   margin-right: 20px;
+}
+.update-icon {
+  font-size: 40px;
+  padding-right: 30px;
+  cursor: pointer;
+}
+.update-input {
+  height: 22px;
+  font-size: 18px;
 }
 </style>
