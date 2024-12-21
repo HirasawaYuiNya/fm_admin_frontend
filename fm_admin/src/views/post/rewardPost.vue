@@ -11,10 +11,10 @@
 import ListPart from "../../components/listPart.vue";
 import Topbar from "../../components/topbar.vue";
 import Sidebar from "../../components/sidebar.vue";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { getPost, getPostList, updatePost } from "../../api/api.js";
 const requestData = {
-  type: null,
+  type: 0,
   typeId: null,
   tagId: null,
   pageNo: 1,
@@ -23,6 +23,7 @@ const requestData = {
 const getPostInfoList = async () => {
   try {
     const response = await getPostList(requestData);
+    console.log("获取悬赏帖子列表返回：", response);
     return response.data.data;
   } catch (err) {
     console.log(err);
@@ -32,6 +33,7 @@ const getPostInfoList = async () => {
 const getPostInfo = async (request) => {
   try {
     const response = await getPost(request);
+    console.log("获取悬赏帖子信息返回：", response);
     return response.data.data;
   } catch (err) {
     console.log(err);
@@ -79,10 +81,6 @@ const listPartData = ref({
   getList: getPostInfoList,
   getInfo: getPostInfo,
   updateInfo: updatePostInfo,
-});
-
-onMounted(() => {
-  getPostInfoList();
 });
 </script>
 <style scoped>

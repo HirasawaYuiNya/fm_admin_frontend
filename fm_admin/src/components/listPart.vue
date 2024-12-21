@@ -89,11 +89,14 @@
       </template>
     </InfoCard>
     <div class="pageController">
-      <LeftOutlined class="page-icon" />
+      <LeftOutlined class="page-icon" @click="previousPage" />
       <span class="page-text"
-        >{{ listData.pages }}/{{ Math.floor(listData.total / 10) + 1 }}</span
+        >{{ listData.pages }}/
+        {{
+          listData.total ? Math.floor((listData.total - 1) / 10) + 1 : ""
+        }}</span
       >
-      <RightOutlined class="page-icon" />
+      <RightOutlined class="page-icon" @click="nextPage" />
     </div>
   </div>
 </template>
@@ -147,8 +150,8 @@ const update = async () => {
   await updateInfoData(cardID.value, updateData.value);
   show_card.value = false;
 };
-const getListData = async () => {
-  listData.value = await props.getList();
+const getListData = async (page) => {
+  listData.value = await props.getList(page);
   dataReceived.value = true;
 };
 const getInfoData = async (id) => {
@@ -170,6 +173,7 @@ const updateInfoData = async (id, data) => {
   }
   showAlert("更新成功", "success");
 };
+//将输入数据处理为对应的类型
 const handleInput = (event, idx) => {
   const value = event.target.value;
   const key = updateKeys[idx];
@@ -183,8 +187,23 @@ const handleInput = (event, idx) => {
     updateData.value[key] = value; // 保持为字符串
   }
 };
+const previousPage = () => {
+  if (listData.value.pages === "1") {
+    showAlert("已经是第一页了", "info");
+    return;
+  }
+  getListData(listData.value.pages - 1);
+};
+const nextPage = () => {
+  console.log(listData.value.pages, listData.value.total / 10);
+  if (listData.value.pages >= listData.value.total / 10) {
+    showAlert("已经是最后一页了", "info");
+    return;
+  }
+  getListData(listData.value.pages + 1);
+};
 onMounted(() => {
-  getListData();
+  getListData(1);
 });
 </script>
 <style scoped>

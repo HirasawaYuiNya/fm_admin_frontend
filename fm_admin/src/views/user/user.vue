@@ -11,17 +11,18 @@
 import ListPart from "../../components/listPart.vue";
 import Topbar from "../../components/topbar.vue";
 import Sidebar from "../../components/sidebar.vue";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import { getUserList, getUser, updateUser } from "../../api/api.js";
-const requestData = ref({
+const requestData = {
   pageNo: 1,
   pageSize: 10,
-});
+};
 
-const getUserInfoList = async (request = requestData) => {
+const getUserInfoList = async (pageNo) => {
+  if (pageNo !== undefined) requestData.pageNo = pageNo;
   try {
-    const response = await getUserList(request.value);
-    listPartData.value.data = response.data.data;
+    const response = await getUserList(requestData);
+    console.log("获取用户列表返回：", response);
     return response.data.data;
   } catch (err) {
     console.log(err);
@@ -31,6 +32,7 @@ const getUserInfoList = async (request = requestData) => {
 const getUserInfo = async (request) => {
   try {
     const response = await getUser(request);
+    console.log("获取用户数据返回：", response);
     return response.data.data;
   } catch (err) {
     console.log(err);
@@ -40,6 +42,7 @@ const getUserInfo = async (request) => {
 const updateUserInfo = async (id, data) => {
   try {
     const response = await updateUser(id, data);
+    console.log("更新用户数据返回：", response);
     return response.data.status;
   } catch (err) {
     console.log(err);
@@ -65,10 +68,6 @@ const listPartData = ref({
   getList: getUserInfoList,
   getInfo: getUserInfo,
   updateInfo: updateUserInfo,
-});
-
-onMounted(() => {
-  getUserInfoList();
 });
 </script>
 <style scoped>

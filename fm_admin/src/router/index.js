@@ -26,11 +26,6 @@ const routes = [
         component: () => import("../views/post/tradePost.vue"),
       },
       {
-        path: "message",
-        name: "message",
-        component: () => import("../views/message/message.vue"),
-      },
-      {
         path: "userReport",
         name: "userReport",
         component: () => import("../views/report/userReport.vue"),

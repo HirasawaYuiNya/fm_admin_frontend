@@ -11,11 +11,11 @@
 import ListPart from "../../components/listPart.vue";
 import Topbar from "../../components/topbar.vue";
 import Sidebar from "../../components/sidebar.vue";
-import { ref, onMounted } from "vue";
-import { getPostList, getPost } from "../../api/api.js";
+import { ref } from "vue";
+import { getPostList, getPost, updatePost } from "../../api/api.js";
 
 const requestData = {
-  type: null,
+  type: 1,
   typeId: null,
   tagId: null,
   pageNo: 1,
@@ -24,6 +24,7 @@ const requestData = {
 const getPostInfoList = async () => {
   try {
     const response = await getPostList(requestData);
+    console.log("获取交易帖子列表返回：", response);
     return response.data.data;
   } catch (err) {
     console.log(err);
@@ -33,7 +34,18 @@ const getPostInfoList = async () => {
 const getPostInfo = async (request) => {
   try {
     const response = await getPost(request);
+    console.log("获取交易帖子信息返回：", response);
     return response.data.data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+const updatePostInfo = async (id, data) => {
+  try {
+    const response = await updatePost(id, data);
+    console.log(response.data);
+    return response.data.status;
   } catch (err) {
     console.log(err);
     return null;
@@ -63,11 +75,11 @@ const listPartData = ref({
     "updateTime",
     "type",
   ],
+  updateHeaders: ["标题", "内容", "状态"],
+  updateKeys: ["title", "content", "status"],
   getList: getPostInfoList,
   getInfo: getPostInfo,
-});
-onMounted(() => {
-  getPostInfoList();
+  updateInfo: updatePostInfo,
 });
 </script>
 <style scoped>

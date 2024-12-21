@@ -49,17 +49,6 @@
         >交易帖子</span
       >
     </div>
-    <div class="sidebar-item" @click="goPage('message')">
-      <CommentOutlined
-        :class="{ 'selecte-color': page === 'message' }"
-        class="sidebar-item-icon"
-      />
-      <span
-        :class="{ 'selecte-color': page === 'message' }"
-        class="sidebar-item-text"
-        >消息管理</span
-      >
-    </div>
     <div class="sidebar-item" @click="showSub('2')">
       <ExclamationCircleOutlined
         :class="{ 'selecte-color': pageType(page) === 'report' }"
@@ -138,7 +127,6 @@ import {
   ContainerOutlined,
   RightOutlined,
   UserOutlined,
-  CommentOutlined,
   ExclamationCircleOutlined,
   QuestionCircleOutlined,
 } from "@ant-design/icons-vue";

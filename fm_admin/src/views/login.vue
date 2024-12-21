@@ -23,6 +23,7 @@ const loginUser = async () => {
       password: password.value,
     };
     const response = await login(requestData);
+    console.log(response);
     if (response.data.status !== 0) {
       showAlert(response.data.msg, "error");
       return;

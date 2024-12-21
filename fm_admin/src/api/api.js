@@ -5,7 +5,8 @@ const monkTest = axios.create({
   timeout: 10000,
 });
 const env = axios.create({
-  baseURL: "/api", // 使用代理
+  //baseURL: "/api", // 使用代理
+  baseURL: "http://127.0.0.1:4523/m1/5505077-5181244-default",
   timeout: 10000,
 });
 
@@ -94,6 +95,92 @@ export const updatePost = (id, data) => {
       "Content-Type": "application/json",
     },
     url: `/api/post/post/${id}`,
+    method: "put",
+    data,
+  });
+};
+//查看评论列表
+export const getCommentList = (params) => {
+  return env({
+    headers: {
+      "Content-Type": "application/json",
+    },
+    url: "/api/post/comment",
+    method: "get",
+    params,
+  });
+};
+//获取消息列表
+export const getMessageList = (params) => {
+  return env({
+    headers: {
+      "Content-Type": "application/json",
+    },
+    url: "/api/social/message/adminMessage",
+    method: "get",
+    params,
+  });
+};
+//获取举报列表
+export const getReportList = (params) => {
+  return env({
+    headers: {
+      "Content-Type": "application/json",
+    },
+    url: "/api/social/report/adminReport",
+    method: "get",
+    params,
+  });
+};
+//获取举报详情
+export const getReport = (id) => {
+  return env({
+    headers: {
+      "Content-Type": "application/json",
+    },
+    url: `/api/social/report/adminReport/${id}`,
+    method: "get",
+  });
+};
+//修改举报状态
+export const updateReport = (id, data) => {
+  return env({
+    headers: {
+      "Content-Type": "application/json",
+    },
+    url: `/api/social/report/adminReport/${id}`,
+    method: "put",
+    data,
+  });
+};
+//获取申诉列表
+export const getAppealList = (params) => {
+  return env({
+    headers: {
+      "Content-Type": "application/json",
+    },
+    url: "/api/social/appeal/adminAppeal",
+    method: "get",
+    params,
+  });
+};
+//获取申诉详情
+export const getAppeal = (id) => {
+  return env({
+    headers: {
+      "Content-Type": "application/json",
+    },
+    url: `/api/social/appeal/adminAppeal/${id}`,
+    method: "get",
+  });
+};
+//修改申述状态
+export const updateAppeal = (id, data) => {
+  return env({
+    headers: {
+      "Content-Type": "application/json",
+    },
+    url: `/api/social/appeal/adminAppeal/${id}`,
     method: "put",
     data,
   });
