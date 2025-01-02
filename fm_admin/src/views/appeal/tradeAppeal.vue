@@ -14,11 +14,11 @@ import Sidebar from "../../components/sidebar.vue";
 import { ref } from "vue";
 import { getAppealList, getAppeal, updateAppeal } from "../../api/api.js";
 
-const requestData = ref({
+const requestData = {
   type: 1,
   pageNo: 1,
   pageSize: 10,
-});
+};
 const getAppealInfoList = async () => {
   try {
     const response = await getAppealList(requestData);

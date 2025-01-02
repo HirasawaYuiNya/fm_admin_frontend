@@ -14,11 +14,11 @@ import Sidebar from "../../components/sidebar.vue";
 import { ref } from "vue";
 import { getReportList, getReport, updateReport } from "../../api/api.js";
 
-const requestData = ref({
-  type: 2,
+const requestData = {
+  type: 0,
   pageNo: 1,
   pageSize: 10,
-});
+};
 const getReportInfoList = async () => {
   try {
     const response = await getReportList(requestData);

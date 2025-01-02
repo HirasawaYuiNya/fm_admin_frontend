@@ -5,7 +5,6 @@ const monkTest = axios.create({
   timeout: 10000,
 });
 const env = axios.create({
-  //baseURL: "/api", // 使用代理
   baseURL: "http://127.0.0.1:4523/m1/5505077-5181244-default",
   timeout: 10000,
 });
@@ -110,24 +109,13 @@ export const getCommentList = (params) => {
     params,
   });
 };
-//获取消息列表
-export const getMessageList = (params) => {
-  return env({
-    headers: {
-      "Content-Type": "application/json",
-    },
-    url: "/api/social/message/adminMessage",
-    method: "get",
-    params,
-  });
-};
 //获取举报列表
 export const getReportList = (params) => {
   return env({
     headers: {
       "Content-Type": "application/json",
     },
-    url: "/api/social/report/adminReport",
+    url: "/api/social/report",
     method: "get",
     params,
   });
@@ -138,7 +126,7 @@ export const getReport = (id) => {
     headers: {
       "Content-Type": "application/json",
     },
-    url: `/api/social/report/adminReport/${id}`,
+    url: `/api/social/report/${id}`,
     method: "get",
   });
 };
@@ -148,7 +136,7 @@ export const updateReport = (id, data) => {
     headers: {
       "Content-Type": "application/json",
     },
-    url: `/api/social/report/adminReport/${id}`,
+    url: `/api/social/report/${id}`,
     method: "put",
     data,
   });
@@ -159,7 +147,7 @@ export const getAppealList = (params) => {
     headers: {
       "Content-Type": "application/json",
     },
-    url: "/api/social/appeal/adminAppeal",
+    url: "/api/social/appeal",
     method: "get",
     params,
   });
@@ -170,7 +158,7 @@ export const getAppeal = (id) => {
     headers: {
       "Content-Type": "application/json",
     },
-    url: `/api/social/appeal/adminAppeal/${id}`,
+    url: `/api/social/appeal/${id}`,
     method: "get",
   });
 };
@@ -180,7 +168,7 @@ export const updateAppeal = (id, data) => {
     headers: {
       "Content-Type": "application/json",
     },
-    url: `/api/social/appeal/adminAppeal/${id}`,
+    url: `/api/social/appeal/${id}`,
     method: "put",
     data,
   });

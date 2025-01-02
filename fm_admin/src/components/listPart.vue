@@ -188,7 +188,7 @@ const handleInput = (event, idx) => {
   }
 };
 const previousPage = () => {
-  if (listData.value.pages === "1") {
+  if (listData.value.pages === 1) {
     showAlert("已经是第一页了", "info");
     return;
   }
